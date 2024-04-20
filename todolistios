@@ -1,0 +1,43 @@
+import UIKit
+
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var textField: UITextField!
+    
+    var items: [String] = []
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Set up table view
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+    
+    // MARK: - Table View Data Source
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = items[indexPath.row]
+        return cell
+    }
+    
+    // MARK: - Button Actions
+    
+    @IBAction func addItem(_ sender: UIButton) {
+        guard let newItem = textField.text, !newItem.isEmpty else { return }
+        items.append(newItem)
+        tableView.reloadData()
+        textField.text = ""
+    }
+    
+    @IBAction func deleteAllItems(_ sender: UIButton) {
+        items.removeAll()
+        tableView.reloadData()
+    }
+}
